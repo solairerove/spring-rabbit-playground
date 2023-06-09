@@ -1,5 +1,6 @@
-package com.github.solairerove;
+package com.github.solairerove.service;
 
+import com.github.solairerove.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -12,6 +13,6 @@ public class RabbitMQConsumer {
 
     @RabbitListener(queues = {"${rabbitmq.fanout.cart.queue.delivery}"})
     public void consume(User message) {
-        LOGGER.info(String.format("Received delivery message -> %s, %s", message.getId(), message.getName()));
+        LOGGER.info(String.format("Received fanout delivery message -> %s, %s", message.id(), message.name()));
     }
 }
