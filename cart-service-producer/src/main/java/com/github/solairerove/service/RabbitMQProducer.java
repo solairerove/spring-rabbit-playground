@@ -12,12 +12,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RabbitMQProducer {
     @Value("${rabbitmq.fanount.cart.exchange}")
-    private String exchange;
+    private String cartFanoutExchange;
+
+    @Value("${rabbitmq.topic.cart.exchange}")
+    private String cartTopicExchange;
 
     private final RabbitTemplate rabbitTemplate;
 
-    public void broadcastMessage(User user) {
+    public void broadcastUser(User user) {
+        log.info(String.format("Message broadcast -> %s", user));
+        rabbitTemplate.convertAndSend(cartFanoutExchange, "", user);
+    }
+
+    public void sendUser(User user, String routingKey) {
         log.info(String.format("Message sent -> %s", user));
-        rabbitTemplate.convertAndSend(exchange, "", user);
+        rabbitTemplate.convertAndSend(cartTopicExchange, routingKey, user);
     }
 }

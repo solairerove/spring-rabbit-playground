@@ -15,8 +15,34 @@ docker run -d --hostname my-rabbit --name some-rabbit-management -p 8089:15672 -
 
 ### Produce message
 ```shell
-curl -XPOST -H "Content-type: application/json" -d '{
+curl --location 'localhost:8081/api/message/broadcast' \
+--header 'Content-Type: application/json' \
+--data '{
   "id": 1,
   "name": "solairerove"
-}' 'localhost:8081/api/message/send'
+}'
+```
+
+```shell
+curl --location 'localhost:8081/api/message/send' \
+--header 'Content-Type: application/json' \
+--data '{
+   "routingKey":"email",
+   "user":{
+      "id":1,
+      "name":"solairerove"
+   }
+}'
+```
+
+```shell
+curl --location 'localhost:8081/api/message/send' \
+--header 'Content-Type: application/json' \
+--data '{
+   "routingKey":"delivery.t",
+   "user":{
+      "id":1,
+      "name":"solairerove"
+   }
+}'
 ```

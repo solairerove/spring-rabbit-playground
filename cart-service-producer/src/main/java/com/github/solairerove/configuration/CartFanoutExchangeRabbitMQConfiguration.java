@@ -10,37 +10,38 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CartFanoutExchangeRabbitMQConfiguration {
+
     @Value("${rabbitmq.fanout.cart.queue.email}")
-    private String emailQueueName;
+    private String emailFanoutQueueName;
 
     @Value("${rabbitmq.fanout.cart.queue.delivery}")
-    private String deliveryQueueName;
+    private String deliveryFanoutQueueName;
 
     @Value("${rabbitmq.fanount.cart.exchange}")
-    private String cartExchangeName;
+    private String cartFanoutExchangeName;
 
     @Bean
-    public Queue emailQueue() {
-        return new Queue(emailQueueName);
+    public Queue emailFanoutQueue() {
+        return new Queue(emailFanoutQueueName);
     }
 
     @Bean
-    public Queue deliveryQueue() {
-        return new Queue(deliveryQueueName);
+    public Queue deliveryFanoutQueue() {
+        return new Queue(deliveryFanoutQueueName);
     }
 
     @Bean
-    public FanoutExchange cartExchange() {
-        return new FanoutExchange(cartExchangeName);
+    public FanoutExchange cartFanoutExchange() {
+        return new FanoutExchange(cartFanoutExchangeName);
     }
 
     @Bean
-    public Binding emailBinding() {
-        return BindingBuilder.bind(emailQueue()).to(cartExchange());
+    public Binding emailFanoutBinding() {
+        return BindingBuilder.bind(emailFanoutQueue()).to(cartFanoutExchange());
     }
 
     @Bean
-    public Binding deliveryBinding() {
-        return BindingBuilder.bind(deliveryQueue()).to(cartExchange());
+    public Binding deliveryFanoutBinding() {
+        return BindingBuilder.bind(deliveryFanoutQueue()).to(cartFanoutExchange());
     }
 }

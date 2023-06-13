@@ -15,4 +15,9 @@ public class RabbitMQConsumer {
     public void consume(User message) {
         LOGGER.info(String.format("Received fanout delivery message -> %s, %s", message.id(), message.name()));
     }
+
+    @RabbitListener(queues = {"${rabbitmq.topic.cart.queue.delivery}"})
+    public void consumeTopicMessage(User message) {
+        LOGGER.info(String.format("Received topic delivery message -> %s, %s", message.id(), message.name()));
+    }
 }

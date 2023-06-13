@@ -1,7 +1,8 @@
 package com.github.solairerove.controller;
 
-import com.github.solairerove.service.RabbitMQProducer;
+import com.github.solairerove.model.Message;
 import com.github.solairerove.model.User;
+import com.github.solairerove.service.RabbitMQProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +16,16 @@ public class ProducerController {
 
     private final RabbitMQProducer rabbitMQProducer;
 
-    @PostMapping("/message/send")
+    @PostMapping("/message/broadcast")
     public String broadcastUser(@RequestBody User user) {
-        rabbitMQProducer.broadcastMessage(user);
+        rabbitMQProducer.broadcastUser(user);
+
+        return "Message broadcast successfully";
+    }
+
+    @PostMapping("/message/send")
+    public String sendMessage(@RequestBody Message message) {
+        rabbitMQProducer.sendUser(message.user(), message.routingKey());
 
         return "Message sent successfully";
     }
